@@ -1,0 +1,556 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="Khao Yai">
+<link rel="manifest" href="manifest.json"></head><body><title>Mo &amp; Pob in Khao Yai</title>
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#F4F5F2" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0C110E" media="(prefers-color-scheme: dark)">
+<style>
+/* ===== Tokens (from the Khao Yai design spec) ===== */
+:root{
+  --sp1:4px; --sp2:8px; --sp3:12px; --sp4:16px; --sp5:20px; --sp6:24px; --sp8:32px; --sp12:48px;
+  --r-badge:6px; --r-inner:10px; --r-card:14px; --r-btn:12px; --r-sheet:20px;
+  --bg:#F4F5F2; --surface:#FFFFFF; --elevated:#FFFFFF; --sep:#E3E6E2;
+  --ink:#15201A; --ink2:#5B665F; --ink3:#6E7771;
+  --brand:#1E4D3A; --brand-ink:#1E4D3A; --on-brand:#FFFFFF; --on-brand2:#C9D8CF; --brand-tint:#E6EFE9;
+  --pop:#00A64E; --on-pop:#FFFFFF; --on-pop2:rgba(255,255,255,.86); --pop-tint:#DDF5E6; --pop-ink:#00803A; --forest:#0F3D2A;
+  --amber-on-brand:#F5C26B; --late-on-brand:#FFB4A8;
+  --pos:#1F7A4D; --warn:#9A5B00; --warn-tint:#FBF0DC; --crit:#B42318;
+  --press:rgba(21,32,26,.06); --track:rgba(21,32,26,.06); --thumb:#FFFFFF; --chip-on:#15201A; --chip-on-ink:#FFFFFF;
+  --bar:rgba(244,245,242,.82); --scrim:rgba(12,17,14,.32);
+  --sheet-shadow:0 -1px 0 rgba(21,32,26,.06),0 -8px 24px rgba(21,32,26,.10); --bar-line:rgba(21,32,26,.12);
+  --font:-apple-system,BlinkMacSystemFont,system-ui,"Helvetica Neue","Thonburi",sans-serif;
+  --sa:env(safe-area-inset-top,0px); --sb:env(safe-area-inset-bottom,0px); --tabh:56px;
+  --ease:cubic-bezier(.25,.1,.25,1); --sheet-ease:cubic-bezier(.32,.72,0,1);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0C110E; --surface:#161D19; --elevated:#1D2621; --sep:#2A332E;
+  --ink:#EEF2EF; --ink2:#9DA8A1; --ink3:#75807A;
+  --brand:#7FC79E; --brand-ink:#7FC79E; --on-brand:#0C110E; --on-brand2:#9DA8A1; --brand-tint:#173A2C;
+  --pop:#00A64E; --on-pop:#FFFFFF; --on-pop2:rgba(255,255,255,.86); --pop-tint:#133826; --pop-ink:#4FDC8D; --forest:#0F3D2A;
+  --pos:#7FC79E; --warn:#F5C26B; --warn-tint:rgba(245,194,107,.14); --crit:#FF8A7A;
+  --press:rgba(238,242,239,.08); --track:rgba(238,242,239,.08); --thumb:#2A332E; --chip-on:#EEF2EF; --chip-on-ink:#0C110E;
+  --bar:rgba(12,17,14,.82); --scrim:rgba(0,0,0,.56); --sheet-shadow:0 -1px 0 rgba(255,255,255,.06); --bar-line:rgba(255,255,255,.10);
+}}
+:root[data-theme="dark"]{
+  --bg:#0C110E; --surface:#161D19; --elevated:#1D2621; --sep:#2A332E;
+  --ink:#EEF2EF; --ink2:#9DA8A1; --ink3:#75807A;
+  --brand:#7FC79E; --brand-ink:#7FC79E; --on-brand:#0C110E; --on-brand2:#9DA8A1; --brand-tint:#173A2C;
+  --pop:#00A64E; --on-pop:#FFFFFF; --on-pop2:rgba(255,255,255,.86); --pop-tint:#133826; --pop-ink:#4FDC8D; --forest:#0F3D2A;
+  --pos:#7FC79E; --warn:#F5C26B; --warn-tint:rgba(245,194,107,.14); --crit:#FF8A7A;
+  --press:rgba(238,242,239,.08); --track:rgba(238,242,239,.08); --thumb:#2A332E; --chip-on:#EEF2EF; --chip-on-ink:#0C110E;
+  --bar:rgba(12,17,14,.82); --scrim:rgba(0,0,0,.56); --sheet-shadow:0 -1px 0 rgba(255,255,255,.06); --bar-line:rgba(255,255,255,.10);
+}
+/* the Now card keeps forest + white in light, tint in dark */
+.nowcard{--nc-bg:#0F3D2A;--nc-ink:#FFFFFF;--nc-ink2:#BFD6C8;--nc-btn:var(--pop);--nc-btn-ink:var(--on-pop);--nc-line:rgba(255,255,255,.16)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .nowcard{--nc-bg:#0F3D2A;--nc-ink:#EEF2EF;--nc-ink2:#A9C4B3;--nc-btn:var(--pop);--nc-btn-ink:var(--on-pop);--nc-line:rgba(255,255,255,.10)}}
+:root[data-theme="dark"] .nowcard{--nc-bg:#0F3D2A;--nc-ink:#EEF2EF;--nc-ink2:#A9C4B3;--nc-btn:var(--pop);--nc-btn-ink:var(--on-pop);--nc-line:rgba(255,255,255,.10)}
+
+/* ===== Base ===== */
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+html,body{margin:0;background:var(--bg);min-height:100dvh}
+body{color:var(--ink);font:400 17px/22px var(--font);-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cursor:pointer;text-align:left}
+a{color:inherit;text-decoration:none}
+p,h1,h2,h3{margin:0}
+:focus-visible{outline:2px solid var(--brand-ink);outline-offset:2px;border-radius:6px}
+button:focus:not(:focus-visible),a:focus:not(:focus-visible){outline:none}
+@media (prefers-reduced-motion:reduce){*{transition-duration:0ms!important;animation:none!important}}
+.tn{font-variant-numeric:tabular-nums}
+[lang="th"]{letter-spacing:0}
+.app{max-width:480px;margin:0 auto;padding:calc(var(--sa) + var(--sp2)) var(--sp5) calc(var(--tabh) + var(--sb) + var(--sp12))}
+
+/* type ramp */
+.largeTitle{font-size:34px;line-height:41px;font-weight:700}
+.title2{font-size:22px;line-height:28px;font-weight:700}
+.title3{font-size:20px;line-height:25px;font-weight:600}
+.headline{font-size:17px;line-height:22px;font-weight:600}
+.body{font-size:17px;line-height:22px}
+.callout{font-size:16px;line-height:21px}
+.subhead{font-size:15px;line-height:20px}
+.footnote{font-size:13px;line-height:18px}
+.caption1{font-size:12px;line-height:16px;font-weight:500}
+.caption2{font-size:11px;line-height:13px;font-weight:500;letter-spacing:.02em;text-transform:uppercase}
+.headline.th,.body.th{line-height:26px}
+.subhead.th{line-height:24px}
+.thaiTitle{font-size:22px;line-height:34px;font-weight:600}
+.ink2{color:var(--ink2)} .ink3{color:var(--ink3)} .pos{color:var(--pos)} .warn{color:var(--warn)} .crit{color:var(--crit)} .brand{color:var(--brand-ink)}
+.w600{font-weight:600}
+
+/* large title header + inline bar */
+.lt{height:52px;display:flex;align-items:flex-end;justify-content:space-between;padding-bottom:var(--sp2)}
+.lt .tbtn{font-size:17px;color:var(--brand-ink);min-height:44px;display:flex;align-items:center}
+.ltsub{margin-top:var(--sp1)}
+.navbar{position:fixed;left:0;right:0;top:0;z-index:25;height:var(--sa);background:transparent;transition:background-color .2s var(--ease)}
+.navbar.veil{background:var(--bar);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px)}
+.navbar.inline{height:calc(var(--sa) + 44px);background:var(--bar);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);box-shadow:0 .5px 0 var(--bar-line)}
+.navbar span{position:absolute;left:0;right:0;bottom:0;height:44px;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:600;opacity:0;transition:opacity .2s var(--ease)}
+.navbar.inline span{opacity:1}
+
+/* sections */
+.sh{display:flex;justify-content:space-between;align-items:baseline;margin:var(--sp8) 0 var(--sp2);padding:0 var(--sp4);font-size:13px;line-height:18px;font-weight:600;color:var(--ink2)}
+.sh .tr{font-weight:400;color:var(--ink3)}
+.group{background:var(--surface);border-radius:var(--r-card);overflow:hidden}
+.row{position:relative;display:flex;align-items:center;gap:var(--sp3);width:100%;min-height:64px;padding:var(--sp3) var(--sp4);transition:background-color .1s linear}
+.row+.row::before{content:"";position:absolute;top:0;left:var(--sp4);right:0;border-top:.5px solid var(--sep)}
+button.row:active{background:var(--press)}
+.row .tx{flex:1;min-width:0}
+.row .tx>*+*{margin-top:var(--sp1)}
+
+/* status */
+.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:currentColor;margin-right:6px;vertical-align:1px}
+.stat{font-size:13px;line-height:18px;font-weight:600}
+.lpill{display:inline-flex;align-items:center;height:22px;padding:0 8px;border-radius:var(--r-badge);font-size:12px;font-weight:600;background:var(--warn-tint);color:var(--warn)}
+
+/* countdown + now card */
+.band{background:var(--pop);color:var(--on-pop);margin:calc(-1 * (var(--sa) + var(--sp2))) calc(-1 * var(--sp5)) 0;padding:calc(var(--sa) + var(--sp2)) var(--sp5) var(--sp6);border-radius:0 0 28px 28px}
+.band .ink2,.band .count .u{color:var(--on-pop2)}
+.band .eyebrow{font-size:15px;line-height:20px;font-weight:600;color:var(--on-pop2);padding-top:var(--sp4)}
+.band .largeTitle{margin-top:var(--sp1)}
+.count{margin-top:var(--sp6)}
+.count .n{font-size:44px;line-height:48px;font-weight:700;letter-spacing:-.02em}
+.count .u{font-size:20px;line-height:25px;font-weight:600;color:var(--ink2);margin-left:var(--sp2)}
+.count .l2{margin-top:var(--sp1)}
+.nowcard{margin-top:var(--sp6);background:var(--nc-bg);color:var(--nc-ink);border-radius:var(--r-card);padding:var(--sp5);position:relative;overflow:hidden}
+.nowcard.late::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--late-on-brand)}
+.nowcard .eb{color:var(--nc-ink2)}
+.nowcard .t{margin-top:var(--sp1)}
+.nowcard .th2{color:var(--nc-ink2)}
+.nowcard hr{border:0;border-top:1px solid var(--nc-line);margin:var(--sp3) 0}
+.nowcard .lv{display:flex;align-items:center;justify-content:space-between;gap:var(--sp3);margin-top:var(--sp3)}
+.nowcard .lv .sub{color:var(--nc-ink2)}
+.nowcard .lv .ontime{color:#5CE59A} .nowcard .lv .amber{color:var(--amber-on-brand)} .nowcard .lv .late{color:var(--late-on-brand)}
+.nbtn{flex:none;height:44px;padding:0 var(--sp4);border-radius:var(--r-inner);background:var(--nc-btn);color:var(--nc-btn-ink);font-size:17px;font-weight:600;display:flex;align-items:center;transition:opacity .1s linear}
+.nbtn:active{opacity:.88}
+
+/* day cards */
+.days{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp3)}
+.dcard{height:96px;padding:var(--sp4);border-radius:var(--r-card);background:var(--surface);display:flex;flex-direction:column;justify-content:space-between;transition:background-color .1s linear}
+.dcard:active{background:var(--press)}
+.dcard.today{background:var(--pop);color:var(--on-pop)}
+.dcard.today .ink2,.dcard.today .brand{color:var(--on-pop2)}
+.dcard .top{display:flex;justify-content:space-between}
+
+/* buttons */
+.btn{display:flex;align-items:center;justify-content:center;height:50px;padding:0 var(--sp5);border-radius:var(--r-btn);font-size:17px;font-weight:600;transition:opacity .1s linear}
+.btn:active{opacity:.88}
+.b-pri{background:var(--pop);color:var(--on-pop)}
+.b-sec{background:var(--pop-tint);color:var(--pop-ink)}
+.tbtn{color:var(--brand-ink);min-height:44px}
+.tbtn:active{opacity:.5}
+
+/* plan */
+.seg{position:relative;display:grid;grid-template-columns:repeat(var(--n),1fr);height:36px;padding:2px;border-radius:var(--r-inner);background:var(--track);margin-top:var(--sp3)}
+.seg i{position:absolute;top:2px;bottom:2px;left:2px;width:calc((100% - 4px)/var(--n));border-radius:8px;background:var(--thumb);box-shadow:0 1px 2px rgba(0,0,0,.12);transition:transform .2s var(--ease);transform:translateX(calc(100% * var(--i)))}
+.seg button{position:relative;z-index:1;font-size:15px;line-height:20px;text-align:center}
+.seg button[aria-pressed="true"]{font-weight:600;color:var(--on-pop)}
+.seg i{background:var(--pop)!important;box-shadow:none!important}
+.map{margin-top:var(--sp4);height:184px;border-radius:var(--r-card);overflow:hidden;background:var(--pop-tint)}
+.map svg{display:block;width:100%;height:100%}
+.map .pin{cursor:pointer;outline:none}
+.map text{font-family:var(--font);pointer-events:none;font-variant-numeric:tabular-nums}
+.mapcap{margin-top:var(--sp2);padding:0 var(--sp4)}
+.tl .item{display:grid;grid-template-columns:52px 24px minmax(0,1fr);align-items:start;width:100%;min-height:64px;padding:var(--sp3) var(--sp4) var(--sp3) var(--sp4);position:relative;transition:background-color .1s linear}
+button.item:active{background:var(--press)}
+.tl .item.cur{background:var(--pop-tint)}
+.tl .item .tm{font-size:15px;line-height:20px;font-weight:600;padding-top:1px}
+.tl .item .rail{position:relative;align-self:stretch}
+.tl .item .rail::before{content:"";position:absolute;left:11px;top:calc(-1 * var(--sp3));bottom:calc(-1 * var(--sp3));border-left:2px solid var(--sep)}
+.tl .item.first .rail::before{top:9px}
+.tl .item.last .rail::before{bottom:auto;height:9px}
+.tl .item .node{position:absolute;left:7px;top:6px;width:10px;height:10px;border-radius:50%;background:var(--surface);box-shadow:inset 0 0 0 2px var(--ink3)}
+.tl .item.cur .node{background:var(--pop);box-shadow:0 0 0 3px var(--pop-tint),0 0 0 4px var(--pop)}
+.tl .item.done .node{background:var(--ink3);box-shadow:none}
+.tl .item.done .nm{color:var(--ink2)}
+.tl .item .ct>*+*{margin-top:var(--sp1)}
+.tl .drive{display:grid;grid-template-columns:52px 24px 1fr;height:28px;align-items:center;padding:0 var(--sp4)}
+.tl .drive .rail{position:relative;height:100%}
+.tl .drive .rail::before{content:"";position:absolute;left:11px;top:0;bottom:0;border-left:2px dashed var(--sep)}
+
+/* places */
+.chips{display:flex;gap:var(--sp2);overflow-x:auto;scrollbar-width:none;margin:var(--sp3) calc(-1 * var(--sp5)) 0;padding:5px var(--sp5)}
+.chips::-webkit-scrollbar{display:none}
+.chips button{flex:none;height:34px;padding:0 14px;border-radius:999px;background:var(--surface);box-shadow:inset 0 0 0 1px var(--sep);font-size:15px;line-height:20px;font-weight:500}
+.chips button span{opacity:.6;margin-left:4px}
+.chips button[aria-pressed="true"]{background:var(--pop);color:var(--on-pop);box-shadow:none;font-weight:600}
+.toggle{margin-top:var(--sp2)}
+.switch{position:relative;flex:none;width:51px;height:31px;border-radius:16px;background:var(--track);transition:background-color .2s var(--ease)}
+.switch::after{content:"";position:absolute;top:2px;left:2px;width:27px;height:27px;border-radius:50%;background:#fff;box-shadow:0 2px 4px rgba(0,0,0,.2);transition:transform .2s var(--ease)}
+.switch[aria-checked="true"]{background:var(--pop)}
+.switch[aria-checked="true"]::after{transform:translateX(20px)}
+.empty{padding:var(--sp12) 0 0;max-width:280px;margin:0 auto;text-align:center}
+.empty>*+*{margin-top:var(--sp1)}
+.notice{margin-top:var(--sp3);padding:var(--sp3) var(--sp4);border-radius:var(--r-inner);background:var(--warn-tint);color:var(--ink);font-size:13px;line-height:18px}
+.foot{margin:var(--sp6) var(--sp4) 0}
+
+/* sheet */
+.scrim{position:fixed;inset:0;background:var(--scrim);z-index:40;opacity:0;transition:opacity .26s var(--sheet-ease)}
+.scrim.on{opacity:1;transition-duration:.38s}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:41;max-width:480px;margin:0 auto;height:var(--sheet-h,85dvh);background:var(--elevated);border-radius:var(--r-sheet) var(--r-sheet) 0 0;box-shadow:var(--sheet-shadow);display:flex;flex-direction:column;transform:translateY(100%);transition:transform .26s var(--sheet-ease)}
+.sheet.on{transition-duration:.38s}
+.sheet.drag{transition:none;will-change:transform}
+.sheet .grabzone{flex:none;height:20px;touch-action:none;display:flex;justify-content:center}
+.sheet .grabber{width:36px;height:5px;border-radius:3px;background:var(--ink3);opacity:.5;margin-top:6px}
+.sheet .sbody{flex:1;overflow-y:auto;overscroll-behavior:contain;padding:0 var(--sp5) var(--sp6)}
+.sheet .shead{display:flex;gap:var(--sp3);align-items:flex-start;justify-content:space-between}
+.sheet .x{flex:none;width:44px;height:44px;margin:-7px -7px 0 0;display:grid;place-items:center}
+.sheet .x span{width:30px;height:30px;border-radius:50%;background:var(--press);display:grid;place-items:center;font-size:15px;line-height:1;color:var(--ink2);font-weight:600}
+.sheet .why{margin-top:var(--sp4);padding:var(--sp3) var(--sp4);border-radius:var(--r-inner);background:var(--pop-tint)}
+.sheet .why>*+*{margin-top:var(--sp1)}
+.sheet .desc{margin-top:var(--sp4)}
+.sheet .group{margin-top:var(--sp6);background:var(--bg)}
+.sheet .row{min-height:44px}
+.sheet .sfoot{flex:none;background:var(--elevated);position:relative;z-index:2;display:flex;gap:var(--sp3);padding:var(--sp3) var(--sp5) calc(var(--sp3) + var(--sb));box-shadow:0 -.5px 0 var(--sep)}
+.sheet .sfoot .btn{flex:1}
+
+/* tab bar */
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--bar);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);box-shadow:0 -.5px 0 var(--bar-line);padding-bottom:var(--sb)}
+.tabbar nav{max-width:480px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr)}
+.tab{height:var(--tabh);display:flex;align-items:center;justify-content:center;font-size:15px;line-height:20px;font-weight:500;color:var(--ink2);text-align:center}
+.tab span{display:inline-flex;align-items:center;height:34px;padding:0 18px;border-radius:999px;transition:background-color .2s var(--ease),color .2s var(--ease)}
+.tab:active span{background:var(--press)}
+.tab[aria-current="page"]{font-weight:700;color:var(--on-pop)}
+.tab[aria-current="page"] span{background:var(--pop)}
+
+/* ===== Desktop prototype: iPhone 16 Pro body with Dynamic Island ===== */
+.device,.screen{display:contents}
+.island,.sbar,.homebar{display:none}
+@media (min-width:700px) and (min-height:600px){
+  :root{--sa:54px;--sb:34px}
+  html,body{height:100%;overflow:hidden}
+  body{display:flex;align-items:center;justify-content:center;background:#E4E6E3}
+  .device{display:block;position:relative;flex:none;width:402px;height:874px;border-radius:62px;background:var(--bg);overflow:hidden;
+    box-shadow:0 0 0 10px #1C1D1F,0 0 0 12px #5E6166,0 0 0 13px #2A2C2F,0 30px 70px rgba(0,0,0,.22);transform:translateZ(0) scale(var(--dz,1));transform-origin:center}
+  .screen{display:block;position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;overscroll-behavior:contain}
+  .screen::-webkit-scrollbar{display:none}
+  .screen.locked{overflow:hidden}
+  .island{display:block;position:absolute;top:11px;left:50%;transform:translateX(-50%);width:126px;height:37px;border-radius:19px;background:#000;z-index:60}
+  .sbar{display:flex;position:absolute;top:0;left:0;right:0;height:54px;z-index:55;align-items:center;justify-content:space-between;padding:4px 34px 0 50px;font:600 17px/1 var(--font);color:var(--ink);pointer-events:none}
+  .sbi{display:flex;align-items:center;gap:6px}.sbi b{font-size:15px;font-weight:600}
+  .batt{width:25px;height:12px;border:1px solid var(--ink3);border-radius:4px;padding:1.5px}
+  .batt i{display:block;height:100%;width:80%;background:var(--ink);border-radius:2px}
+  .homebar{display:block;position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:139px;height:5px;border-radius:3px;background:var(--ink);z-index:60}
+  .sheet{--sheet-h:calc(874px - 54px - 12px)}
+}
+@media (min-width:700px) and (min-height:600px) and (prefers-color-scheme:dark){body{background:#1A1D1B}}
+</style>
+
+<div class="device"><div class="island" aria-hidden="true"></div>
+<div class="sbar" aria-hidden="true"><span id="sbt" class="tn">9:41</span><span class="sbi"><b>5G</b><span class="batt"><i></i></span></span></div>
+<div class="screen" id="screen"><main class="app" id="app"></main></div>
+<div class="navbar" id="navbar" aria-hidden="true"><span id="navt"></span></div>
+<div class="tabbar"><nav aria-label="Sections" id="tabs"></nav></div>
+<div class="scrim" id="scrim" hidden></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="shtitle" hidden></div>
+<div class="homebar" aria-hidden="true"></div></div>
+
+<script>
+/* ================= DATA (single source of truth) ================= */
+const TZ = "+07:00";
+const CHECKED = "26 Oct 2026";
+const HOME = "the-series";
+// n name as locals say it, t Thai name when n is English, a area, c type, r [Google rating, reviews], h hours,
+// o [opens, closes] for "Open now", cd closed weekdays (0 = Sun), q Google Maps search, uv hours not confirmed
+const P = {
+  "the-series": {n:"The Series Resort Khaoyai", t:"เดอะซีรี่ย์ รีสอร์ท เขาใหญ่", a:"Kud Kla–Phan Suek Rd", c:"Resort", ll:[14.560068,101.302987], cat:"stay", r:[4.9,927],
+    d:"Pool with a lazy river, free bikes, and Charn restaurant on site.", h:"Check-in 15:00, check-out 12:00"},
+  "checkpoint": {n:"ด่านอุทยานแห่งชาติเขาใหญ่", a:"Thanarat Rd, north gate", c:"Park entrance", ll:[14.507816,101.3790201], cat:"do", r:[4.7,4977],
+    d:"Cash only. Thai adults 40 baht each, plus 50 for the car.", h:"Daily 06:00–18:00", o:[6,18]},
+  "phadiaodai": {n:"ผาเดียวดาย", a:"Inside the park, south end", c:"Viewpoint", ll:[14.366754,101.405487], cat:"do", uv:1, r:[4.8,791],
+    d:"A cliff over 1,100 m up, at the end of a 500 m boardwalk through the forest. It closes in the rainy season and usually reopens before November.", h:"Park hours"},
+  "km30": {n:"จุดชมวิว กม.30", a:"Thanarat Rd", c:"Viewpoint", ll:[14.4738264,101.390191], cat:"do", r:[4.7,2032],
+    d:"Roadside lookout over the hills.", h:"Open all day"},
+  "raluek": {n:"ระลึก", q:"ระลึก เขาใหญ่", a:"Near the park gate", c:"Thai", ll:[14.5352,101.3878], cat:"meal", r:[4.9,5817],
+    d:"Reviewers mention Northern Thai dishes, salads and curries.", h:"Daily 10:30–22:00", o:[10.5,22]},
+  "matco": {n:"MAT&CO", q:"MAT&co Matcha Khaoyai", a:"Near the park gate", c:"Matcha", ll:[14.5345467,101.3867016], cat:"cafe", r:[4.9,353],
+    d:"Matcha café.", h:"07:30–17:30, Sat until 20:00, closed Tue", o:[7.5,20], cd:[2]},
+  "chowbarn": {n:"Chow Barn", t:"เชาบาร์น", a:"The Peri Hotel, 1 km from the resort", c:"Isaan", ll:[14.566759,101.2963366], cat:"meal", r:[4.6,1383],
+    d:"Isaan food with a mountain view. Som tum, larb and the fish kang soup are the ones people order.", h:"11:00–21:00, Fri to Sun until 22:00", o:[11,22]},
+  "fairys": {n:"Fairy's Scone House", a:"Thanarat Rd", c:"Tea room", ll:[14.5703221,101.4042917], cat:"sweet", r:[4.4,514],
+    d:"Scones, and an afternoon tea set if you're hungry.", h:"Weekends 08:30–18:30, closed Wed", o:[8.5,18.5], cd:[3]},
+  "r505": {n:"505 ข้าวหอมโภชนา สาขา 2", q:"505ข้าวหอมโภชนา สาขา2", a:"Thanarat Rd", c:"Thai", ll:[14.5576182,101.4092593], cat:"meal", r:[4.7,245],
+    d:"Known for good service.", h:"Daily 10:00–21:00", o:[10,21]},
+  "bananacake": {n:"เค้กกล้วยหอมเขาใหญ่", q:"Banana Cake Khao Yai", a:"Thanarat Rd", c:"Bakery", ll:[14.557966,101.4070604], cat:"sweet", r:[4.7,1315],
+    d:"Banana cake that travels well.", h:"Weekends 08:00–18:00", o:[8,18]},
+  "saisook": {n:"ไทรสุก", q:"Saisook Khao Yai", a:"Near the park gate", c:"Ice cream", ll:[14.5344317,101.3842557], cat:"sweet", r:[4.7,1727],
+    d:"Ice cream in flavours you won't find elsewhere.", h:"Daily 09:30–17:00", o:[9.5,17]},
+  "khaam": {n:"Khaam Khaoyai", a:"Wang Sai, about 40 min east", c:"Matcha", ll:[14.6605942,101.5345452], cat:"cafe", r:[4.4,861],
+    d:"Matcha and a Japanese rock garden. It's out of the way, so it isn't in the plan.", h:"Daily 08:30–18:00", o:[8.5,18]},
+  "likeamountain": {n:"Like A Mountain", a:"Khanong Phra", c:"Café", ll:[14.589154,101.4443968], cat:"cafe", r:[4.3,375],
+    d:"White building by the water. Their coffee comes topped with fresh cream.", h:"Daily 09:00–17:00", o:[9,17]},
+  "banmai": {n:"บ้านไม้ชายน้ำ", a:"Pak Chong town, by the river", c:"Thai, Bib Gourmand", ll:[14.6971857,101.4101861], cat:"meal", r:[4.4,4793],
+    d:"Riverside house full of old things. Minced beef curry and crispy gourami. There's usually a queue.", h:"Daily 09:00–21:00", o:[9,21]}
+};
+// t time, p place, dr minutes of driving to get there, bk booked, w why it's in the plan, d note
+const DAYS = [
+  {date:"2026-11-14", dow:"Sat", title:"Into the park", stops:[
+    {id:"a1", t:"07:00", title:"Leave Bangkok", d:"About 2¾ hours on Motorway 6. Fill up and bring cash for the park."},
+    {id:"a2", t:"09:45", p:"fairys", title:"Scones at Fairy's", w:"It's on the way in and opens at 08:30."},
+    {id:"a3", t:"10:45", p:"checkpoint", title:"Park gate", dr:15},
+    {id:"a4", t:"11:30", p:"phadiaodai", title:"ผาเดียวดาย", dr:40, w:"The best view in the park, and the road there is half the fun."},
+    {id:"a5", t:"12:45", p:"km30", title:"จุดชมวิว กม.30", dr:30, w:"A quick stop on the way back out."},
+    {id:"a6", t:"13:15", p:"raluek", title:"Lunch at ระลึก", dr:15, w:"Rated 9/10 in the เขาใหญ่2026 post, and just outside the gate."},
+    {id:"a7", t:"14:45", p:"matco", title:"Matcha at MAT&CO", dr:2, w:"Next door to ระลึก."},
+    {id:"a8", t:"16:00", p:"the-series", title:"Check in", dr:25, bk:1},
+    {id:"a9", t:"16:30", p:"the-series", title:"Pool", w:"Time to do nothing before dinner."},
+    {id:"a10",t:"19:00", p:"chowbarn", title:"Dinner at Chow Barn", dr:5, w:"Five minutes from the resort, so no long drive after dark."}
+  ]},
+  {date:"2026-11-15", dow:"Sun", title:"Slow morning, drive home", stops:[
+    {id:"b1", t:"08:00", p:"the-series", title:"Breakfast", bk:1, w:"Included with the room."},
+    {id:"b2", t:"09:15", p:"the-series", title:"Pool or bikes", w:"The resort lends bikes for free."},
+    {id:"b3", t:"11:30", p:"the-series", title:"Check out", bk:1, w:"Check-out is by 12:00."},
+    {id:"b4", t:"12:00", p:"r505", title:"Lunch at 505 ข้าวหอมโภชนา", dr:25, w:"Rated 9/10 in the post, which says branch 2 has no queue."},
+    {id:"b5", t:"13:15", p:"bananacake", title:"เค้กกล้วยหอม to take home", dr:2, w:"Two minutes from lunch."},
+    {id:"b6", t:"13:45", p:"saisook", title:"Ice cream at ไทรสุก", dr:10, w:"Rated 10/10 in the post."},
+    {id:"b7", t:"14:45", title:"Drive home", d:"About 3 hours. Leaving before 15:00 misses the worst of the Sunday traffic."},
+    {id:"b8", t:"17:45", title:"Home"}
+  ]}
+];
+const TIPS = [
+  ["Bring cash for the park", "The gate only takes cash: 40 baht each, and 50 for the car."],
+  ["Save the map offline", "There's little signal inside the park. Download the area in Google Maps before you go in."],
+  ["Give elephants room", "If one is on the road, stop well back and wait for it to cross."],
+  ["Keep the windows up at viewpoints", "Monkeys take food from open cars."]
+];
+const CATS = [["all","All"],["meal","Meals"],["cafe","Cafés"],["sweet","Sweets"],["do","Sights"]];
+const LEAVE_HOME = "about 2 h 45 min drive";
+
+
+/* ================= Clock ================= */
+function NOWMS(){ if(window.__SIM) return window.__SIM;
+  try{ const q=new URLSearchParams(location.search).get("now"); if(q) return Date.parse(q+TZ);}catch(_){}
+  return Date.now(); }
+const msOf=(date,t)=>Date.parse(date+"T"+t+":00"+TZ);
+const ALL=DAYS.flatMap((d,di)=>d.stops.map(s=>({...s,di,ms:msOf(d.date,s.t)})));
+const T0=ALL[0].ms, T1=ALL[ALL.length-1].ms;
+const phase=()=>{ const n=NOWMS(); return n<T0?"before":n>=T1?"after":"during"; };
+function nowNext(){ const n=NOWMS(); let cur=null,next=null; for(const s of ALL){ if(s.ms<=n) cur=s; else { next=s; break; } } return {cur,next}; }
+const bkk=ms=>new Date(ms+7*3600e3);
+const todayIdx=()=>DAYS.findIndex(x=>x.date===bkk(NOWMS()).toISOString().slice(0,10));
+const hhmm=ms=>bkk(ms).toISOString().slice(11,16);
+const hm=h=>String(Math.floor(h)).padStart(2,"0")+":"+String(Math.round((h%1)*60)).padStart(2,"0");
+const dur=m=>m<60?`${m} min`:`${Math.floor(m/60)} h${m%60?` ${m%60} min`:""}`;
+
+/* ================= Text helpers ================= */
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const isTh=s=>/[฀-๿]/.test(s);
+const T=s=>esc(s).replace(/([฀-๿][฀-๿\s.]*[฀-๿]|[฀-๿])/g,'<span lang="th">$1</span>');
+const thc=s=>isTh(s)?" th":"";
+const rating=k=>{ const r=P[k].r; return r?`★ <span class="tn">${r[0].toFixed(1)} (${r[1].toLocaleString("en-US")})</span>`:""; };
+function openLine(k){ const p=P[k]; if(!p.o) return ""; const d=bkk(NOWMS()), h=d.getUTCHours()+d.getUTCMinutes()/60, closedDay=(p.cd||[]).includes(d.getUTCDay());
+  if(!closedDay&&h>=p.o[0]&&h<p.o[1]) return `<span class="pos">Open until <span class="tn">${hm(p.o[1])}</span></span>`;
+  if(!closedDay&&h<p.o[0]) return `<span class="crit">Closed · opens <span class="tn">${hm(p.o[0])}</span></span>`;
+  return `<span class="crit">Closed · opens tomorrow</span>`; }
+const isOpen=k=>{ const p=P[k]; if(!p.o) return true; const d=bkk(NOWMS()), h=d.getUTCHours()+d.getUTCMinutes()/60; return !(p.cd||[]).includes(d.getUTCDay())&&h>=p.o[0]&&h<p.o[1]; };
+const dirUrl=k=>"https://maps.apple.com/?daddr="+P[k].ll.join(",")+"&dirflg=d";
+const gUrl=k=>"https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(P[k].q||(P[k].n+(k==="checkpoint"?"":" Khao Yai")));
+const dayLbl=d=>`${d.dow} ${+d.date.slice(8)} Nov`;
+function stopMeta(s){ if(!s.p) return s.d||""; const p=P[s.p]; if(s.p===HOME) return "The Series Resort";
+  const named=s.title.includes(p.n.split(" ")[0])||p.n.includes(s.title); return named?p.c:p.n+" · "+p.c; }
+const offline=()=>navigator.onLine===false?`<div class="notice" role="status">No signal. The plan is saved on this phone; directions need signal.</div>`:"";
+
+/* ================= State ================= */
+const S={tab:"home", day:Math.max(0,todayIdx()), cat:"all", openOnly:false};
+try{ const v=JSON.parse(localStorage.getItem("ky.state")||"{}"); if(v.tab) S.tab=v.tab; if(v.cat) S.cat=v.cat; if(v.openOnly) S.openOnly=true; if(todayIdx()<0&&v.day!=null) S.day=v.day; }catch(_){}
+const save=()=>{ try{ localStorage.setItem("ky.state",JSON.stringify({tab:S.tab,day:S.day,cat:S.cat,openOnly:S.openOnly})); }catch(_){} };
+
+/* ================= Scroll, device ================= */
+const SC=()=>{ const sc=document.getElementById("screen"); return getComputedStyle(sc).display==="block"?sc:null; };
+const scroller=()=>SC()||window;
+const scrollPos=()=>{ const sc=SC(); return sc?sc.scrollTop:window.scrollY; };
+function fit(){ document.documentElement.style.setProperty("--dz",Math.min(1,(innerHeight-40)/900,(innerWidth-40)/428).toFixed(3)); }
+addEventListener("resize",fit); fit();
+function onScroll(){ const y=scrollPos(), nb=document.getElementById("navbar"); nb.classList.toggle("inline",y>40); nb.classList.toggle("veil",y>0&&y<=40); }
+addEventListener("scroll",onScroll,{passive:true}); document.getElementById("screen").addEventListener("scroll",onScroll,{passive:true});
+
+/* ================= Render ================= */
+function go(tab){ S.tab=tab; save(); render(); scroller().scrollTo(0,0); onScroll(); }
+function render(){
+  const t=hhmm(NOWMS()); document.getElementById("sbt").textContent=(+t.slice(0,2))+t.slice(2);
+  const v=S.tab==="plan"?vPlan():S.tab==="places"?vPlaces():vTrip();
+  document.getElementById("app").innerHTML=v.html; document.getElementById("navt").innerHTML=v.title;
+  document.getElementById("tabs").innerHTML=[["home","Trip"],["plan","Plan"],["places","Places"]].map(([k,l])=>
+    `<button class="tab" ${S.tab===k?'aria-current="page"':""} data-tab="${k}"><span>${l}</span></button>`).join("");
+}
+window.render=render;
+const header=(title,trail)=>`<header class="lt"><h1 class="largeTitle">${title}</h1>${trail||""}</header>`;
+
+/* ---------- Trip ---------- */
+function vTrip(){
+  const ph=phase(), n=NOWMS(); let h=`<section class="band"><p class="eyebrow">Mo and Pob's trip</p><h1 class="largeTitle">Khao Yai</h1><p class="subhead ink2 ltsub">Sat 14 – Sun 15 Nov · The Series Resort</p>`;
+  if(ph==="before"){ const days=Math.ceil((T0-n)/864e5), f=ALL[0], first=bkk(T0).toISOString().slice(0,10)===bkk(n).toISOString().slice(0,10);
+    h+= (T0-n)<864e5
+      ? `<div class="count"><span class="n tn">${first?"Today":"Tomorrow"}</span><span class="u tn">${f.t}</span><p class="footnote ink2 l2">Leave Bangkok at ${f.t} · ${LEAVE_HOME}</p></div>`
+      : `<div class="count"><span class="n tn">${days}</span><span class="u">days to go</span><p class="footnote ink2 l2">Leave Bangkok Sat ${f.t} · ${LEAVE_HOME}</p></div>`;
+  }
+  h+=`</section>`+offline();
+  if(ph==="during") h+=nowCard();
+  if(ph==="after") h=h.replace('</section>'+offline(),`<div class="count"><span class="n">Home</span><p class="footnote ink2 l2">That was the trip. The plan stays here if you want to look back.</p></div></section>`+offline());
+  const ti=todayIdx();
+  h+=`<div class="sh"><span>Days</span></div><div class="days">${DAYS.map((d,i)=>`<button class="dcard${i===ti?" today":""}" data-day="${i}">
+      <span class="top"><span class="footnote ink2">${dayLbl(d)}</span>${i===ti?'<span class="caption1 brand">Today</span>':""}</span>
+      <span><span class="title3" style="display:block">Day ${i+1}</span><span class="subhead ink2 tn">${d.stops.length} stops</span></span></button>`).join("")}</div>`;
+  const r=P[HOME];
+  h+=`<div class="sh"><span>Stay</span></div><div class="group">
+    <button class="row" data-place="${HOME}"><span class="tx"><span class="headline" style="display:block">${r.n}</span><span class="subhead ink2" style="display:block">${rating(HOME)} · Booked, breakfast included</span></span></button>
+    <div class="row"><span class="tx"><span class="footnote ink2" style="display:block">Check-in</span><span class="headline tn" style="display:block">Sat 15:00</span></span>
+      <span class="tx"><span class="footnote ink2" style="display:block">Check-out</span><span class="headline tn" style="display:block">Sun 12:00</span></span></div></div>`;
+  h+=`<div class="sh"><span>Good to know</span></div><div class="group">${TIPS.map(([a,b])=>`<div class="row"><span class="tx"><span class="headline" style="display:block">${a}</span><span class="subhead ink2" style="display:block">${b}</span></span></div>`).join("")}</div>`;
+  h+=`<p class="footnote ink3 foot">Ratings and hours from Google Maps, checked ${CHECKED}.</p>`;
+  return {title:"Khao Yai",html:h};
+}
+function nowCard(){
+  const {cur,next}=nowNext(); const n=NOWMS();
+  let h=`<section class="nowcard${next&&next.dr&&next.ms-next.dr*6e4<n?" late":""}" aria-label="Now and up next">`;
+  if(cur){ const p=cur.p&&P[cur.p]; h+=`<p class="caption2 eb">Now</p><p class="title2 t${thc(cur.title)}">${T(cur.title)}</p>${p&&p.t?`<p class="subhead th th2" lang="th">${esc(p.t)}</p>`:""}`; }
+  if(next){
+    const lm=next.dr?next.ms-next.dr*6e4:next.ms, mins=Math.round((lm-n)/6e4);
+    const word=next.dr?"Leave by":"Starts";
+    const cls=mins<10?"late":mins<=30?"amber":"ontime";
+    const lead= mins<0 ? `<span class="headline late">${-mins} min late</span>` : mins<1 ? `<span class="headline late">${next.dr?"Leave now":"Starting now"}</span>` : `<span class="headline ${cls} tn">${word} ${hhmm(lm)}</span> <span class="subhead sub tn">in ${dur(mins)}</span>`;
+    h+=`${cur?"<hr>":""}<p class="caption2 eb">Up next</p><p class="headline t${thc(next.title)}">${T(next.title)}</p>
+      <div class="lv"><span>${lead}</span>${next.p?`<a class="nbtn" href="${dirUrl(next.p)}" target="_blank" rel="noopener">Directions</a>`:""}</div>`;
+  }
+  return h+`</section>`;
+}
+
+/* ---------- Plan ---------- */
+function vPlan(){
+  const d=DAYS[S.day], n=NOWMS(), nn=nowNext(), ph=phase(), ti=todayIdx();
+  const trail=(ph==="during"&&ti>=0&&ti!==S.day)?`<button class="tbtn" data-sday="${ti}">Today</button>`:"";
+  let h=header("Plan",trail)+offline();
+  h+=`<div class="seg" role="group" aria-label="Day" style="--n:${DAYS.length};--i:${S.day}"><i aria-hidden="true"></i>${DAYS.map((x,i)=>`<button aria-pressed="${i===S.day}" data-sday="${i}">${x.dow} ${+x.date.slice(8)}</button>`).join("")}</div>`;
+  const driving=d.stops.reduce((a,s)=>a+(s.dr||0),0);
+  h+=mapSVG(d)+`<p class="footnote ink2 mapcap tn">${d.title} · ${dur(driving)} of driving between stops</p>`;
+  h+=`<div class="sh"><span class="tn">${d.stops.length} stops</span></div><div class="group tl">`;
+  d.stops.forEach((s0,i)=>{
+    const s={...s0,di:S.day,ms:msOf(d.date,s0.t)}, isCur=ph==="during"&&nn.cur&&nn.cur.id===s.id, isNext=ph==="during"&&nn.next&&nn.next.id===s.id, done=s.ms<n&&!isCur;
+    if(s.dr) h+=`<div class="drive" aria-hidden="true"><span></span><span class="rail"></span><span class="caption1 ink3">${s.dr} min drive</span></div>`;
+    const st=[];
+    if(isNext&&s.dr) st.push(`<span class="lpill tn">Leave by ${hhmm(s.ms-s.dr*6e4)}</span>`);
+    if(s.bk) st.push(`<span class="stat pos"><span class="dot"></span>Booked</span>`);
+    if(s.p&&P[s.p].uv) st.push(`<span class="stat warn"><span class="dot"></span>Check hours</span>`);
+    const cls=`item${isCur?" cur":""}${done?" done":""}${i===0?" first":""}${i===d.stops.length-1?" last":""}`;
+    const inner=`<span class="tm tn">${s.t}</span><span class="rail"><span class="node"></span></span><span class="ct">
+      <span class="headline nm${thc(s.title)}" style="display:block">${T(s.title)}</span>
+      <span class="footnote ink2${thc(stopMeta(s))}" style="display:block">${T(stopMeta(s))}</span>${st.length?`<span style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">${st.join("")}</span>`:""}</span>`;
+    h+= s.p?`<button class="${cls}" id="s-${s.id}" data-stop="${s.id}">${inner}</button>`:`<div class="${cls}" id="s-${s.id}">${inner}</div>`;
+  });
+  return {title:"Plan",html:h+`</div>`};
+}
+function mapSVG(d){
+  const pts=d.stops.filter(s=>s.p).reduce((a,s)=>{ if(!a.find(x=>x.p===s.p)) a.push({p:s.p,ids:[s.id],first:s.id,n:a.length+1}); else a.find(x=>x.p===s.p).ids.push(s.id); return a; },[]);
+  if(pts.length<2) return "";
+  const W=350,H=184,pad=26, lat=pts.map(x=>P[x.p].ll[0]), lng=pts.map(x=>P[x.p].ll[1]);
+  let a0=Math.min(...lat),a1=Math.max(...lat),o0=Math.min(...lng),o1=Math.max(...lng);
+  const k=Math.cos(14.5*Math.PI/180); let sx=(o1-o0)*k||.01, sy=(a1-a0)||.01; const ar=(W-2*pad)/(H-2*pad);
+  if(sx/sy>ar){ const e=(sx/ar-sy)/2; a0-=e; a1+=e; sy=a1-a0; } else { const e=(sy*ar-sx)/2/k; o0-=e; o1+=e; sx=(o1-o0)*k; }
+  pts.forEach(x=>{ const ll=P[x.p].ll; x.x=x.ox=pad+((ll[1]-o0)*k)/sx*(W-2*pad); x.y=x.oy=pad+(a1-ll[0])/sy*(H-2*pad); });
+  for(let it=0;it<80;it++) for(let i=0;i<pts.length;i++) for(let j=i+1;j<pts.length;j++){ const A=pts[i],B=pts[j]; let dx=B.x-A.x,dy=B.y-A.y,dd=Math.hypot(dx,dy);
+    if(dd<26){ if(dd<.5){dx=1;dy=0;dd=1} const f=(26-dd)/2; A.x-=dx/dd*f; A.y-=dy/dd*f; B.x+=dx/dd*f; B.y+=dy/dd*f; } }
+  pts.forEach(x=>{ x.x=Math.max(16,Math.min(W-16,x.x)); x.y=Math.max(16,Math.min(H-16,x.y)); });
+  const css=getComputedStyle(document.documentElement), br=css.getPropertyValue("--pop").trim(), line=css.getPropertyValue("--pop-ink").trim(), sf=css.getPropertyValue("--surface").trim(), i3=css.getPropertyValue("--ink3").trim(), ob=css.getPropertyValue("--on-pop").trim();
+  const n=NOWMS(), nn=nowNext(), ph=phase();
+  return `<div class="map" role="group" aria-label="Route map, ${pts.length} places"><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet">
+    <polyline points="${pts.map(x=>x.ox.toFixed(1)+","+x.oy.toFixed(1)).join(" ")}" fill="none" stroke="${line}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    ${pts.map(x=>{ const cur=ph==="during"&&nn.cur&&x.ids.includes(nn.cur.id), done=!cur&&x.ids.every(id=>ALL.find(a=>a.id===id).ms<n), r=cur?14:11;
+      return `<g class="pin" data-jump="${x.first}" role="button" tabindex="0" aria-label="Stop ${x.n}, ${esc(P[x.p].n)}">
+      ${Math.hypot(x.x-x.ox,x.y-x.oy)>2?`<line x1="${x.ox}" y1="${x.oy}" x2="${x.x}" y2="${x.y}" stroke="${br}" stroke-width="1"/>`:""}
+      <circle cx="${x.x}" cy="${x.y}" r="22" fill="transparent"/><circle cx="${x.x}" cy="${x.y}" r="${r}" fill="${done?i3:br}" stroke="${sf}" stroke-width="2"/>
+      <text x="${x.x}" y="${x.y+4}" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">${x.n}</text></g>`; }).join("")}
+  </svg></div>`;
+}
+
+/* ---------- Places ---------- */
+const inPlan=k=>ALL.find(x=>x.p===k&&k!==HOME);
+function vPlaces(){
+  const keys=Object.keys(P).filter(k=>P[k].cat!=="stay"&&k!=="checkpoint");
+  const pass=k=>(S.cat==="all"||P[k].cat===S.cat)&&(!S.openOnly||isOpen(k));
+  const cnt=c=>keys.filter(k=>(c==="all"||P[k].cat===c)&&(!S.openOnly||isOpen(k))).length;
+  const list=keys.filter(pass);
+  const planned=list.filter(inPlan).sort((a,b)=>inPlan(a).ms-inPlan(b).ms), others=list.filter(k=>!inPlan(k)).sort((a,b)=>P[b].r[0]-P[a].r[0]);
+  let h=header("Places")+`<p class="subhead ink2 ltsub">${keys.length} places around Pak Chong</p>`+offline();
+  h+=`<div class="chips" role="group" aria-label="Category">${CATS.map(([c,l])=>`<button aria-pressed="${S.cat===c}" data-cat="${c}">${l}<span class="tn">${cnt(c)}</span></button>`).join("")}</div>`;
+  h+=`<div class="group toggle"><div class="row" style="min-height:44px"><span class="tx body" id="openlbl">Open now</span><button class="switch" role="switch" aria-checked="${S.openOnly}" aria-labelledby="openlbl" data-toggle="open"></button></div></div>`;
+  const row=k=>{ const p=P[k], ip=inPlan(k), meta=[esc(p.c),rating(k)], ol=openLine(k); if(ol) meta.push(ol);
+    return `<button class="row" data-place="${k}"><span class="tx"><span class="headline${thc(p.n)}" style="display:block">${T(p.n)}</span>
+      <span class="subhead ink2" style="display:block">${meta.join(" · ")}</span>
+      <span class="footnote ink2${thc(p.a)}" style="display:block">${ip?`<span class="w600 tn" style="color:var(--pop-ink)">${DAYS[ip.di].dow} ${ip.t}</span> · `:""}${T(p.a)}${p.uv?' · <span class="warn w600">Check hours</span>':""}</span></span></button>`; };
+  if(!list.length){ const c=CATS.find(x=>x[0]===S.cat)[1].toLowerCase();
+    return {title:"Places",html:h+`<div class="empty"><p class="headline">No ${S.cat==="all"?"places":c} open right now</p><p class="subhead ink2">Most places here close by 18:00.</p><button class="tbtn body" data-toggle="open">Show closed places</button></div>`}; }
+  if(planned.length) h+=`<div class="sh" style="margin-top:var(--sp4)"><span>In your plan</span></div><div class="group">${planned.map(row).join("")}</div>`;
+  if(others.length) h+=`<div class="sh"><span>Also nearby</span></div><div class="group">${others.map(row).join("")}</div>`;
+  return {title:"Places",html:h};
+}
+
+/* ---------- Sheet (medium, drag up to large) ---------- */
+let lastFocus=null, sheetY=0;
+const sheetEl=()=>document.getElementById("sheet");
+const sheetH=()=>sheetEl().getBoundingClientRect().height||innerHeight*.85;
+const vpH=()=>{ const sc=SC(); return sc?sc.clientHeight:innerHeight; };
+const MED=()=>Math.max(0,sheetH()-vpH()*.5);
+function setY(y){ sheetY=y; const sh=sheetEl(); sh.style.transform=`translateY(${y}px)`; const f=sh.querySelector(".sfoot"), b=sh.querySelector(".sbody"); if(f) f.style.transform=`translateY(${-y}px)`; if(b) b.style.paddingBottom=`calc(${y}px + 24px)`; }
+function openSheet(k,stop){
+  lastFocus=document.activeElement;
+  const p=P[k], sh=sheetEl(), bg=document.getElementById("scrim"), ip=inPlan(k), src=stop||ip, why=src&&(src.w||src.d);
+  const thaiTitle=isTh(p.n);
+  sh.innerHTML=`<div class="grabzone" data-grab><div class="grabber"></div></div>
+    <div class="sbody">
+      <div class="shead"><div><h2 id="shtitle" class="${thaiTitle?"thaiTitle":"title2"}"${thaiTitle?' lang="th"':""}>${esc(p.n)}</h2>${p.t?`<p class="subhead ink2 th" lang="th">${esc(p.t)}</p>`:""}</div>
+        <button class="x" data-close aria-label="Close"><span aria-hidden="true">✕</span></button></div>
+      <p class="subhead ink2${thc(p.a)}" style="margin-top:var(--sp3)">${esc(p.c)} · ${rating(k)} · ${T(p.a)}</p>
+      ${why?`<div class="why"><p class="footnote w600 brand">Why it's in the plan</p><p class="body${thc(why)}">${T(why)}</p></div>`:""}
+      <p class="body ink2 desc">${esc(p.d)}</p>
+      <div class="group">
+        <div class="row"><span class="tx body">Today</span><span class="subhead">${openLine(k)||'<span class="ink2">No set hours</span>'}</span></div>
+        <div class="row"><span class="tx body">Hours</span><span class="subhead ink2 tn" style="text-align:right">${esc(p.h||"Not listed")}</span></div>
+        ${k!==HOME?`<div class="row"><span class="tx body">In your plan</span><span class="subhead ink2 tn">${ip?`${DAYS[ip.di].dow} ${ip.t}`:"No"}</span></div>`:""}
+      </div>
+      ${p.uv?`<p class="footnote ink2" style="margin:var(--sp2) var(--sp4) 0">These hours aren't confirmed. Check before you go.</p>`:""}
+    </div>
+    <div class="sfoot"><a class="btn b-pri" href="${dirUrl(k)}" target="_blank" rel="noopener">Directions</a><a class="btn b-sec" href="${gUrl(k)}" target="_blank" rel="noopener">Google Maps</a></div>`;
+  sh.hidden=false; bg.hidden=false; sh.classList.remove("on"); setY(sheetH());
+  const sc=SC(); if(sc) sc.classList.add("locked"); else { lockY=scrollY; document.body.style.cssText=`position:fixed;top:-${lockY}px;left:0;right:0`; }
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{ sh.classList.add("on"); bg.classList.add("on"); setY(MED()); }));
+  sh.querySelector(".x").focus({preventScroll:true});
+}
+let lockY=0;
+function closeSheet(){ const sh=sheetEl(), bg=document.getElementById("scrim"); if(sh.hidden) return;
+  sh.classList.remove("on"); bg.classList.remove("on"); setY(sheetH());
+  setTimeout(()=>{ sh.hidden=true; bg.hidden=true; },270);
+  const sc=SC(); if(sc) sc.classList.remove("locked"); else { document.body.style.cssText=""; window.scrollTo(0,lockY); }
+  if(lastFocus&&lastFocus.focus) lastFocus.focus({preventScroll:true}); }
+(()=>{ const sh=sheetEl(); let y0=null,start=0,moved=0;
+  sh.addEventListener("pointerdown",e=>{ const body=sh.querySelector(".sbody"); const onGrab=!!e.target.closest("[data-grab]");
+    if(!onGrab&&!(body&&body.scrollTop<=0&&sheetY>0)) return; if(e.target.closest("a,button")) return;
+    y0=e.clientY; start=sheetY; moved=0; sh.classList.add("drag"); sh.setPointerCapture(e.pointerId); });
+  sh.addEventListener("pointermove",e=>{ if(y0==null) return; moved=e.clientY-y0; setY(Math.max(0,start+moved)); });
+  const end=()=>{ if(y0==null) return; y0=null; sh.classList.remove("drag"); const m=MED();
+    if(sheetY>m+80) return closeSheet(); setY(moved<-40||sheetY<m/2?0:m); };
+  sh.addEventListener("pointerup",end); sh.addEventListener("pointercancel",end); })();
+
+/* ================= Events ================= */
+document.addEventListener("click",e=>{
+  const t=e.target.closest("[data-tab],[data-day],[data-sday],[data-stop],[data-jump],[data-cat],[data-place],[data-toggle],[data-close],#scrim"); if(!t) return;
+  if(t.dataset.tab) return go(t.dataset.tab);
+  if(t.dataset.day){ S.day=+t.dataset.day; return go("plan"); }
+  if(t.dataset.sday){ S.day=+t.dataset.sday; save(); return render(); }
+  if(t.dataset.jump){ const el=document.getElementById("s-"+t.dataset.jump); if(el){ const sc=SC(); const y=el.getBoundingClientRect().top-(sc?sc.getBoundingClientRect().top:0)+scrollPos()-120; scroller().scrollTo({top:y,behavior:matchMedia("(prefers-reduced-motion:reduce)").matches?"auto":"smooth"}); } return; }
+  if(t.dataset.stop){ const s=ALL.find(x=>x.id===t.dataset.stop); if(s&&s.p) openSheet(s.p,s); return; }
+  if(t.dataset.cat){ S.cat=t.dataset.cat; save(); return render(); }
+  if(t.dataset.toggle){ S.openOnly=!S.openOnly; save(); return render(); }
+  if(t.dataset.place) return openSheet(t.dataset.place);
+  if(t.hasAttribute("data-close")||t.id==="scrim") return closeSheet();
+});
+addEventListener("online",render); addEventListener("offline",render);
+document.addEventListener("keydown",e=>{ const sh=sheetEl();
+  if(e.key==="Escape") closeSheet();
+  if(e.key==="Tab"&&!sh.hidden){ const f=[...sh.querySelectorAll("a,button")], a=f[0], z=f[f.length-1];
+    if(e.shiftKey&&document.activeElement===a){e.preventDefault();z.focus()} else if(!e.shiftKey&&document.activeElement===z){e.preventDefault();a.focus()} }
+  if((e.key==="Enter"||e.key===" ")&&e.target.classList&&e.target.classList.contains("pin")){ e.preventDefault(); e.target.dispatchEvent(new MouseEvent("click",{bubbles:true})); } });
+setInterval(()=>{ if(!window.__SIM&&document.visibilityState==="visible"&&sheetEl().hidden&&phase()==="during") render(); },15000);
+setInterval(()=>{ if(!window.__SIM&&document.visibilityState==="visible"&&sheetEl().hidden&&phase()!=="during") render(); },60000);
+render(); onScroll();
+</script>
+<script>if("serviceWorker" in navigator)addEventListener("load",()=>navigator.serviceWorker.register("sw.js"));</script></body></html>
