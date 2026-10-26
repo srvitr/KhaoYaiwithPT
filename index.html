@@ -1,8 +1,9 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="Khao Yai">
-<link rel="manifest" href="manifest.json"></head><body><title>Mo &amp; Pob in Khao Yai</title>
+<link rel="manifest" href="manifest.json"><link rel="apple-touch-startup-image" href="launch/440x956@3-light.png" media="(device-width: 440px) and (device-height: 956px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: light)"><link rel="apple-touch-startup-image" href="launch/440x956@3-dark.png" media="(device-width: 440px) and (device-height: 956px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: dark)"><link rel="apple-touch-startup-image" href="launch/402x874@3-light.png" media="(device-width: 402px) and (device-height: 874px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: light)"><link rel="apple-touch-startup-image" href="launch/402x874@3-dark.png" media="(device-width: 402px) and (device-height: 874px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: dark)"><link rel="apple-touch-startup-image" href="launch/430x932@3-light.png" media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: light)"><link rel="apple-touch-startup-image" href="launch/430x932@3-dark.png" media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: dark)"><link rel="apple-touch-startup-image" href="launch/393x852@3-light.png" media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: light)"><link rel="apple-touch-startup-image" href="launch/393x852@3-dark.png" media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: dark)"><link rel="apple-touch-startup-image" href="launch/428x926@3-light.png" media="(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: light)"><link rel="apple-touch-startup-image" href="launch/428x926@3-dark.png" media="(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: dark)"><link rel="apple-touch-startup-image" href="launch/390x844@3-light.png" media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: light)"><link rel="apple-touch-startup-image" href="launch/390x844@3-dark.png" media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: dark)"><link rel="apple-touch-startup-image" href="launch/375x812@3-light.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: light)"><link rel="apple-touch-startup-image" href="launch/375x812@3-dark.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: dark)"><link rel="apple-touch-startup-image" href="launch/414x896@3-light.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: light)"><link rel="apple-touch-startup-image" href="launch/414x896@3-dark.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: dark)"><link rel="apple-touch-startup-image" href="launch/414x896@2-light.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait) and (prefers-color-scheme: light)"><link rel="apple-touch-startup-image" href="launch/414x896@2-dark.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait) and (prefers-color-scheme: dark)"><link rel="apple-touch-startup-image" href="launch/375x667@2-light.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait) and (prefers-color-scheme: light)"><link rel="apple-touch-startup-image" href="launch/375x667@2-dark.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait) and (prefers-color-scheme: dark)"></head><body><title>Mo &amp; Pob in Khao Yai</title>
 <meta name="color-scheme" content="light dark">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="theme-color" content="#F4F5F2" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0C110E" media="(prefers-color-scheme: dark)">
 <style>
@@ -50,7 +51,17 @@
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 html,body{margin:0;background:var(--bg);min-height:100dvh}
-body{color:var(--ink);font:400 17px/22px var(--font);-webkit-font-smoothing:antialiased}
+body{color:var(--ink);font:400 17px/22px var(--font);-webkit-font-smoothing:antialiased;-webkit-user-select:none;user-select:none}
+a,button{-webkit-touch-callout:none}
+/* motion: content enters, never pops */
+.v-fade{animation:vFade .22s var(--ease) both}
+@keyframes vFade{from{opacity:0}}
+.v-left{animation:vLeft .34s cubic-bezier(.32,.72,0,1) both}
+@keyframes vLeft{from{opacity:0;transform:translateX(32px)}}
+.v-right{animation:vRight .34s cubic-bezier(.32,.72,0,1) both}
+@keyframes vRight{from{opacity:0;transform:translateX(-32px)}}
+.flash{animation:flash 1.4s var(--ease)}
+@keyframes flash{0%,35%{background:var(--pop-tint)}}
 button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cursor:pointer;text-align:left}
 a{color:inherit;text-decoration:none}
 p,h1,h2,h3{margin:0}
@@ -94,7 +105,8 @@ button:focus:not(:focus-visible),a:focus:not(:focus-visible){outline:none}
 .group{background:var(--surface);border-radius:var(--r-card);overflow:hidden}
 .row{position:relative;display:flex;align-items:center;gap:var(--sp3);width:100%;min-height:64px;padding:var(--sp3) var(--sp4);transition:background-color .1s linear}
 .row+.row::before{content:"";position:absolute;top:0;left:var(--sp4);right:0;border-top:.5px solid var(--sep)}
-button.row:active{background:var(--press)}
+button.row{transition:background-color .35s var(--ease)}
+button.row:active{background:var(--press);transition:none}
 .row .tx{flex:1;min-width:0}
 .row .tx>*+*{margin-top:var(--sp1)}
 
@@ -127,14 +139,16 @@ button.row:active{background:var(--press)}
 /* day cards */
 .days{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp3)}
 .dcard{height:96px;padding:var(--sp4);border-radius:var(--r-card);background:var(--surface);display:flex;flex-direction:column;justify-content:space-between;transition:background-color .1s linear}
-.dcard:active{background:var(--press)}
+.dcard{transition:background-color .35s var(--ease),transform .35s var(--ease)}
+.dcard:active{background:var(--press);transition:none}
+.dcard.today:active{filter:brightness(.92)}
 .dcard.today{background:var(--pop);color:var(--on-pop)}
 .dcard.today .ink2,.dcard.today .brand{color:var(--on-pop2)}
 .dcard .top{display:flex;justify-content:space-between}
 
 /* buttons */
-.btn{display:flex;align-items:center;justify-content:center;height:50px;padding:0 var(--sp5);border-radius:var(--r-btn);font-size:17px;font-weight:600;transition:opacity .1s linear}
-.btn:active{opacity:.88}
+.btn{display:flex;align-items:center;justify-content:center;height:50px;padding:0 var(--sp5);border-radius:var(--r-btn);font-size:17px;font-weight:600;transition:opacity .3s var(--ease)}
+.btn:active{opacity:.6;transition:none}
 .b-pri{background:var(--pop);color:var(--on-pop)}
 .b-sec{background:var(--pop-tint);color:var(--pop-ink)}
 .tbtn{color:var(--brand-ink);min-height:44px}
@@ -152,7 +166,8 @@ button.row:active{background:var(--press)}
 .map text{font-family:var(--font);pointer-events:none;font-variant-numeric:tabular-nums}
 .mapcap{margin-top:var(--sp2);padding:0 var(--sp4)}
 .tl .item{display:grid;grid-template-columns:52px 24px minmax(0,1fr);align-items:start;width:100%;min-height:64px;padding:var(--sp3) var(--sp4) var(--sp3) var(--sp4);position:relative;transition:background-color .1s linear}
-button.item:active{background:var(--press)}
+button.item{transition:background-color .35s var(--ease)}
+button.item:active{background:var(--press);transition:none}
 .tl .item.cur{background:var(--pop-tint)}
 .tl .item .tm{font-size:15px;line-height:20px;font-weight:600;padding-top:1px}
 .tl .item .rail{position:relative;align-self:stretch}
@@ -185,10 +200,10 @@ button.item:active{background:var(--press)}
 .foot{margin:var(--sp6) var(--sp4) 0}
 
 /* sheet */
-.scrim{position:fixed;inset:0;background:var(--scrim);z-index:40;opacity:0;transition:opacity .26s var(--sheet-ease)}
-.scrim.on{opacity:1;transition-duration:.38s}
-.sheet{position:fixed;left:0;right:0;bottom:0;z-index:41;max-width:480px;margin:0 auto;height:var(--sheet-h,85dvh);background:var(--elevated);border-radius:var(--r-sheet) var(--r-sheet) 0 0;box-shadow:var(--sheet-shadow);display:flex;flex-direction:column;transform:translateY(100%);transition:transform .26s var(--sheet-ease)}
-.sheet.on{transition-duration:.38s}
+.scrim{position:fixed;inset:0;background:var(--scrim);z-index:40;opacity:0;transition:opacity .32s var(--sheet-ease)}
+.scrim.on{opacity:1;transition-duration:.5s}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:41;max-width:480px;margin:0 auto;height:var(--sheet-h,85dvh);background:var(--elevated);border-radius:var(--r-sheet) var(--r-sheet) 0 0;box-shadow:var(--sheet-shadow);display:flex;flex-direction:column;transform:translateY(100%);transition:transform .34s var(--sheet-ease)}
+.sheet.on{transition-duration:.52s}
 .sheet.drag{transition:none;will-change:transform}
 .sheet .grabzone{flex:none;height:20px;touch-action:none;display:flex;justify-content:center}
 .sheet .grabber{width:36px;height:5px;border-radius:3px;background:var(--ink3);opacity:.5;margin-top:6px}
@@ -206,12 +221,15 @@ button.item:active{background:var(--press)}
 
 /* tab bar */
 .tabbar{position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--bar);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);box-shadow:0 -.5px 0 var(--bar-line);padding-bottom:var(--sb)}
-.tabbar nav{max-width:480px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr)}
+.tabbar nav{position:relative;max-width:480px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr)}
+.tabind{position:absolute;left:0;top:calc((var(--tabh) - 34px) / 2);width:calc(100% / 3);height:34px;display:flex;justify-content:center;pointer-events:none;transition:transform .5s cubic-bezier(.34,1.22,.64,1)}
+.tabind i{display:block;height:34px;width:var(--w,72px);border-radius:999px;background:var(--pop);transition:width .5s cubic-bezier(.34,1.22,.64,1)}
 .tab{height:var(--tabh);display:flex;align-items:center;justify-content:center;font-size:15px;line-height:20px;font-weight:500;color:var(--ink2);text-align:center}
-.tab span{display:inline-flex;align-items:center;height:34px;padding:0 18px;border-radius:999px;transition:background-color .2s var(--ease),color .2s var(--ease)}
-.tab:active span{background:var(--press)}
+.tab{position:relative;z-index:1;transition:color .3s var(--ease)}
+.tab span{display:inline-flex;align-items:center;height:34px;padding:0 18px;border-radius:999px;transition:transform .2s var(--ease)}
+.tab:active span{transform:scale(.94);transition:none}
 .tab[aria-current="page"]{font-weight:700;color:var(--on-pop)}
-.tab[aria-current="page"] span{background:var(--pop)}
+
 
 /* ===== Desktop prototype: iPhone 16 Pro body with Dynamic Island ===== */
 .device,.screen{display:contents}
@@ -365,14 +383,26 @@ function onScroll(){ const y=scrollPos(), nb=document.getElementById("navbar"); 
 addEventListener("scroll",onScroll,{passive:true}); document.getElementById("screen").addEventListener("scroll",onScroll,{passive:true});
 
 /* ================= Render ================= */
-function go(tab){ S.tab=tab; save(); render(); scroller().scrollTo(0,0); onScroll(); }
-function render(){
+const TABS=[["home","Trip"],["plan","Plan"],["places","Places"]];
+const reduced=()=>matchMedia("(prefers-reduced-motion:reduce)").matches;
+const SCROLL={};
+function go(tab,keepScroll){
+  if(tab===S.tab){ scroller().scrollTo({top:0,behavior:reduced()?"auto":"smooth"}); return; }   // tapping the current tab scrolls to top
+  SCROLL[S.tab]=scrollPos(); S.tab=tab; save(); render("v-fade");
+  scroller().scrollTo(0,keepScroll?0:(SCROLL[tab]||0)); onScroll();                             // each tab keeps its own scroll position
+}
+function buildTabs(){ document.getElementById("tabs").innerHTML='<span class="tabind" id="tabind" aria-hidden="true"><i></i></span>'+TABS.map(([k,l])=>`<button class="tab" data-tab="${k}"><span>${l}</span></button>`).join(""); }
+function syncTabs(){ const i=TABS.findIndex(x=>x[0]===S.tab), ind=document.getElementById("tabind");
+  document.querySelectorAll(".tab").forEach((b,j)=>{ if(j===i) b.setAttribute("aria-current","page"); else b.removeAttribute("aria-current"); });
+  const sp=document.querySelectorAll(".tab span")[i]; ind.style.transform=`translateX(${i*100}%)`; if(sp&&sp.offsetWidth) ind.style.setProperty("--w",sp.offsetWidth+"px"); }
+function render(anim){
   const t=hhmm(NOWMS()); document.getElementById("sbt").textContent=(+t.slice(0,2))+t.slice(2);
   const v=S.tab==="plan"?vPlan():S.tab==="places"?vPlaces():vTrip();
-  document.getElementById("app").innerHTML=v.html; document.getElementById("navt").innerHTML=v.title;
-  document.getElementById("tabs").innerHTML=[["home","Trip"],["plan","Plan"],["places","Places"]].map(([k,l])=>
-    `<button class="tab" ${S.tab===k?'aria-current="page"':""} data-tab="${k}"><span>${l}</span></button>`).join("");
+  document.getElementById("app").innerHTML=`<div class="${anim&&!reduced()?anim:""}">${v.html}</div>`; document.getElementById("navt").innerHTML=v.title;
+  if(!render.inited){ const ind=document.getElementById("tabind"); ind.style.transition="none"; ind.firstChild.style.transition="none"; syncTabs(); void ind.offsetWidth; ind.style.transition=""; ind.firstChild.style.transition=""; render.inited=1; }
+  else syncTabs();
 }
+buildTabs();
 window.render=render;
 const header=(title,trail)=>`<header class="lt"><h1 class="largeTitle">${title}</h1>${trail||""}</header>`;
 
@@ -534,12 +564,15 @@ function closeSheet(){ const sh=sheetEl(), bg=document.getElementById("scrim"); 
 document.addEventListener("click",e=>{
   const t=e.target.closest("[data-tab],[data-day],[data-sday],[data-stop],[data-jump],[data-cat],[data-place],[data-toggle],[data-close],#scrim"); if(!t) return;
   if(t.dataset.tab) return go(t.dataset.tab);
-  if(t.dataset.day){ S.day=+t.dataset.day; return go("plan"); }
-  if(t.dataset.sday){ S.day=+t.dataset.sday; save(); return render(); }
-  if(t.dataset.jump){ const el=document.getElementById("s-"+t.dataset.jump); if(el){ const sc=SC(); const y=el.getBoundingClientRect().top-(sc?sc.getBoundingClientRect().top:0)+scrollPos()-120; scroller().scrollTo({top:y,behavior:matchMedia("(prefers-reduced-motion:reduce)").matches?"auto":"smooth"}); } return; }
+  if(t.dataset.day){ S.day=+t.dataset.day; save(); return go("plan",true); }
+  if(t.dataset.sday){ const nd=+t.dataset.sday; if(nd===S.day) return; const seg=document.querySelector(".seg");
+    if(seg){ seg.style.setProperty("--i",nd); seg.querySelectorAll("button").forEach((b,j)=>b.setAttribute("aria-pressed",j===nd)); }
+    const dir=nd>S.day?"v-left":"v-right"; S.day=nd; save(); setTimeout(()=>{ render(dir); const s=document.querySelector(".seg i"); },seg?160:0); return; }
+  if(t.dataset.jump){ const el=document.getElementById("s-"+t.dataset.jump); if(el){ const sc=SC(); const y=el.getBoundingClientRect().top-(sc?sc.getBoundingClientRect().top:0)+scrollPos()-120; scroller().scrollTo({top:y,behavior:reduced()?"auto":"smooth"}); el.classList.remove("flash"); void el.offsetWidth; el.classList.add("flash"); } return; }
   if(t.dataset.stop){ const s=ALL.find(x=>x.id===t.dataset.stop); if(s&&s.p) openSheet(s.p,s); return; }
-  if(t.dataset.cat){ S.cat=t.dataset.cat; save(); return render(); }
-  if(t.dataset.toggle){ S.openOnly=!S.openOnly; save(); return render(); }
+  if(t.dataset.cat){ S.cat=t.dataset.cat; save(); const y=scrollPos(); render(); const g=document.querySelectorAll(".app .sh, .app .group:not(.toggle), .app .empty"); g.forEach(e=>e.classList.add("v-fade")); scroller().scrollTo(0,y); return; }
+  if(t.dataset.toggle){ S.openOnly=!S.openOnly; save(); const sw=document.querySelector(".switch"); if(sw) sw.setAttribute("aria-checked",S.openOnly);
+    setTimeout(()=>{ const y=scrollPos(); render(); document.querySelectorAll(".app .sh, .app .group:not(.toggle), .app .empty, .app .chips").forEach(e=>e.classList.add("v-fade")); scroller().scrollTo(0,y); },sw?220:0); return; }
   if(t.dataset.place) return openSheet(t.dataset.place);
   if(t.hasAttribute("data-close")||t.id==="scrim") return closeSheet();
 });
@@ -551,6 +584,6 @@ document.addEventListener("keydown",e=>{ const sh=sheetEl();
   if((e.key==="Enter"||e.key===" ")&&e.target.classList&&e.target.classList.contains("pin")){ e.preventDefault(); e.target.dispatchEvent(new MouseEvent("click",{bubbles:true})); } });
 setInterval(()=>{ if(!window.__SIM&&document.visibilityState==="visible"&&sheetEl().hidden&&phase()==="during") render(); },15000);
 setInterval(()=>{ if(!window.__SIM&&document.visibilityState==="visible"&&sheetEl().hidden&&phase()!=="during") render(); },60000);
-render(); onScroll();
+render("v-fade"); onScroll();
 </script>
 <script>if("serviceWorker" in navigator)addEventListener("load",()=>navigator.serviceWorker.register("sw.js"));</script></body></html>
