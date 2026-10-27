@@ -199,7 +199,7 @@ button.item:active{background:var(--press);transition:none}
 /* sheet */
 .scrim{position:fixed;inset:0;background:var(--scrim);z-index:40;opacity:0;transition:opacity .32s var(--sheet-ease)}
 .scrim.on{opacity:1;transition-duration:.5s}
-.sheet{position:fixed;left:0;right:0;bottom:0;z-index:41;max-width:480px;margin:0 auto;height:var(--sheet-h,85dvh);background:var(--sheet-bg);border-radius:var(--r-sheet) var(--r-sheet) 0 0;box-shadow:var(--sheet-shadow);display:flex;flex-direction:column;transform:translateY(100%);transition:transform .34s var(--sheet-ease)}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:41;max-width:480px;margin:0 auto;height:var(--sheet-h,85dvh);max-height:var(--sheet-h,85dvh);background:var(--sheet-bg);border-radius:var(--r-sheet) var(--r-sheet) 0 0;box-shadow:var(--sheet-shadow);display:flex;flex-direction:column;transform:translateY(100%);transition:transform .34s var(--sheet-ease),height .34s var(--sheet-ease)}
 .sheet.on{transition-duration:.52s}
 .sheet.drag{transition:none;will-change:transform}
 .sheet .grabzone{flex:none;height:24px;touch-action:none;display:flex;justify-content:center}
@@ -1457,7 +1457,7 @@ function openFriendly(k){ const p=P[k]; if(!p.o) return null; const d=bkk(NOWMS(
 /* ---------- Sheet (medium, drag up to large) ---------- */
 let lastFocus=null, sheetY=0;
 const sheetEl=()=>document.getElementById("sheet");
-const sheetH=()=>sheetEl().getBoundingClientRect().height||innerHeight*.85;
+const sheetH=()=>parseFloat(getComputedStyle(sheetEl()).maxHeight)||innerHeight*.85;
 const vpH=()=>{ const sc=SC(); return sc?sc.clientHeight:innerHeight; };
 /* medium detent hugs the content (no empty band above the button), within 40–62% of the screen */
 const MED=()=>{ const sh=sheetEl(), g=sh.querySelector(".grabzone"), b=sh.querySelector(".sbody"), f=sh.querySelector(".sfoot"), last=b&&b.lastElementChild;
@@ -1465,8 +1465,10 @@ const MED=()=>{ const sh=sheetEl(), g=sh.querySelector(".grabzone"), b=sh.queryS
   const inner=last.getBoundingClientRect().bottom-b.getBoundingClientRect().top+b.scrollTop+24;
   const gz=g&&!g.classList.contains("onhero")?g.offsetHeight:0, want=gz+inner+(f?f.offsetHeight:0);
   return Math.max(0,sheetH()-Math.min(vpH()*.68,Math.max(vpH()*.4,want))); };
-window.reMed=()=>{ if(sheetY>0) { const sh=sheetEl(); sh.style.transition="transform .35s var(--ease)"; setY(MED()); } };
-function setY(y){ sheetY=y; const sh=sheetEl(); sh.style.transform=`translateY(${y}px)`; const f=sh.querySelector(".sfoot"), b=sh.querySelector(".sbody"); if(f) f.style.transform=`translateY(${-y}px)`; if(b) b.style.paddingBottom=`calc(${y}px + 24px)`; }
+window.reMed=()=>{ if(sheetY>0) setY(MED()); };
+/* the sheet's height IS the detent (no counter-moving footer), so the button and content move as one piece */
+function setY(y){ sheetY=Math.max(0,y); const sh=sheetEl(); sh.style.height=Math.max(0,sheetH()-sheetY)+"px"; }
+function slide(on){ sheetEl().style.transform=on?"translateY(0)":"translateY(100%)"; }
 function openSheet(k,stop){
   lastFocus=document.activeElement;
   const p=P[k], sh=sheetEl(), bg=document.getElementById("scrim"), ip=inPlan(k), src=stop||ip, why=src&&(src.w||src.d);
@@ -1488,15 +1490,15 @@ function openSheet(k,stop){
       ${p.uv?`<p class="footnote ink2 note">We couldn't confirm these hours, so it's worth checking before you go.</p>`:""}
     </div>
     <div class="sfoot"><a class="btn b-pri" href="${gDir(k)}" target="_blank" rel="noopener">Open in Google Maps</a></div>`;
-  sh.hidden=false; bg.hidden=false; sh.classList.remove("on"); setY(sheetH());
+  sh.hidden=false; bg.hidden=false; sh.classList.remove("on"); clearTimeout(closeSheet.t); sh.style.transition="none"; slide(false); sh.style.height=""; setY(MED()); void sh.offsetHeight; sh.style.transition="";
   const sc=SC(); if(sc) sc.classList.add("locked"); else { lockY=scrollY; document.body.style.cssText=`position:fixed;top:-${lockY}px;left:0;right:0`; }
-  requestAnimationFrame(()=>requestAnimationFrame(()=>{ sh.classList.add("on"); bg.classList.add("on"); setY(MED()); }));
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{ sh.classList.add("on"); bg.classList.add("on"); slide(true); }));
   sh.querySelector(".x").focus({preventScroll:true,focusVisible:false});
 }
 let lockY=0;
 function closeSheet(){ const sh=sheetEl(), bg=document.getElementById("scrim"); if(sh.hidden) return;
-  sh.classList.remove("on"); bg.classList.remove("on"); setY(sheetH());
-  setTimeout(()=>{ sh.hidden=true; bg.hidden=true; },270);
+  sh.classList.remove("on"); bg.classList.remove("on"); slide(false);
+  closeSheet.t=setTimeout(()=>{ sh.hidden=true; bg.hidden=true; },380);
   const sc=SC(); if(sc) sc.classList.remove("locked"); else { document.body.style.cssText=""; window.scrollTo(0,lockY); }
   if(lastFocus&&lastFocus.focus) lastFocus.focus({preventScroll:true}); }
 (()=>{ const sh=sheetEl(); let y0=null,start=0,moved=0,drag=false,pid=0;

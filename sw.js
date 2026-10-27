@@ -1,4 +1,4 @@
-const C="ky-1ff7a807d7",T="ky-tiles-v1",F=['index.html', 'manifest.json', 'apple-touch-icon.png', 'icon-192.png', 'icon-512.png'];
+const C="ky-a4f038fb56",T="ky-tiles-v1",F=['index.html', 'manifest.json', 'apple-touch-icon.png', 'icon-192.png', 'icon-512.png'];
 self.addEventListener("install",e=>{e.waitUntil(caches.open(C).then(c=>c.addAll(F.map(f=>f==="index.html"?"./":f))));self.skipWaiting()});
 self.addEventListener("activate",e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==C&&x!==T).map(x=>caches.delete(x)))));self.clients.claim()});
 self.addEventListener("fetch",e=>{const r=e.request;if(r.method!=="GET")return;
